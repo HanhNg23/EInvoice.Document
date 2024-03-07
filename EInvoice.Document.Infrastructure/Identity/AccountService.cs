@@ -10,7 +10,7 @@ namespace EInvoice.Document.Infrastructure.Identity
 {
     public class AccountService : IAccountService
     {
-        private readonly UserManager<IdentityUser> _userManager; 
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
         public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
@@ -20,7 +20,7 @@ namespace EInvoice.Document.Infrastructure.Identity
         }
         public AuthenticationProperties ConfigureExternalLoginPropertiesForRedirect(string loginProvider, string? redirectUrl)
         {
-            return  _signInManager.ConfigureExternalAuthenticationProperties(loginProvider, redirectUrl);
+            return _signInManager.ConfigureExternalAuthenticationProperties(loginProvider, redirectUrl);
         }
 
         public async Task ExternalLoginRetrieveInfo()
@@ -104,6 +104,7 @@ namespace EInvoice.Document.Infrastructure.Identity
                     var result = await _userManager.CreateAsync(user);
                     Console.WriteLine("==== User Created Result: " + result);
                     //await _userManager.AddToRoleAsync(user, "User");
+
                     await _userManager.AddLoginAsync(user, info);
                 }
                 else //when user not found login with specific login provider but found in existed accounts
@@ -111,7 +112,7 @@ namespace EInvoice.Document.Infrastructure.Identity
                     await _userManager.AddLoginAsync(user, info);
                 }
             }
-            _userManager.SetAuthenticationTokenAsync(user, externalLoginInfo.LoginProvider, "access_token", accessToken.Value);
+            await _userManager.SetAuthenticationTokenAsync(user, externalLoginInfo.LoginProvider, "access_token", accessToken.Value);
             if (user == null) //check current user is null
             {
                 throw new ApplicationException("Invalid External Authentication");
@@ -133,6 +134,12 @@ namespace EInvoice.Document.Infrastructure.Identity
             string? userAccessToken = await _userManager.GetAuthenticationTokenAsync(user, loginProvider, "access_token");
             Console.WriteLine("==== Current User : " + " User Id: " + userId + " LoginProvider: " + loginProvider + " AccessToken: " + userAccessToken);
             return userAccessToken;
+        }
+
+        public async Task SignOutAsync()
+        {
+            await _signInManager.SignOutAsync();
+            Console.WriteLine("==== Sign Out Done ");
         }
     }
 }

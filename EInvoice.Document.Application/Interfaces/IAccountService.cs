@@ -9,5 +9,6 @@ namespace EInvoice.Document.Application.Interfaces
         Task<string> GetUserAccessTokenAsync(string userId);
         AuthenticationProperties ConfigureExternalLoginPropertiesForRedirect(string loginProvider, string? redirectUrl);
         Task ExternalLoginRetrieveInfo();
+        Task SignOutAsync();
     }
 }

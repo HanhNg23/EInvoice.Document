@@ -56,10 +56,10 @@ namespace EInvoice.Document.Infrastructure.ApiClients.EInvoiceDocumentClient
             {
                 //using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
                 //IDictionary<string, string> keyvalue = await JsonSerializer.DeserializeAsync(contentStream); //this help to convert to object
-                
+                //return await httpResponseMessage.Content.ReadAsStringAsync();
                 
             }
-            return "Empty" + httpResponseMessage.Content.ReadAsStringAsync();
+            return await httpResponseMessage.Content.ReadAsStringAsync();
         }
 
         public string SearchDocument(string query)

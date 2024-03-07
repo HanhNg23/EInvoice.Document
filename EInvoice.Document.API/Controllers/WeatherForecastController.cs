@@ -47,6 +47,7 @@ namespace EInvoice.Document.API.Controllers
 
         [HttpGet]
         [Route("GetDocmentTestWithGoogle")]
+        [Authorize(AuthenticationSchemes = GoogleDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetDocmentTestWithGoogle()
         {
             var result = await _einvoiceDocuemtnClientService.GetGoogleMe();
@@ -64,9 +65,9 @@ namespace EInvoice.Document.API.Controllers
         [Route("external-login-redirect")]
         public async Task<IActionResult> ExternalLoginRedirect()
         {
-
-            string redirectUrl = Url.Action(nameof(this.ExternalLogin), nameof(WeatherForecastController));
-            Console.WriteLine("==== SECOND FAKE REDIRECT URL: " + redirectUrl);
+            await _accountService.SignOutAsync();
+            string redirectUrl = Url.Action(nameof(this.ExternalLogin), "WeatherForecast");
+            Console.WriteLine("==== REDIRECT URL: " + redirectUrl);
 
             AuthenticationProperties properties = _accountService.ConfigureExternalLoginPropertiesForRedirect(GoogleDefaults.DisplayName, redirectUrl);
             properties.AllowRefresh = true;
@@ -74,10 +75,10 @@ namespace EInvoice.Document.API.Controllers
             ChallengeResult challengeResult = new ChallengeResult(GoogleDefaults.AuthenticationScheme, properties);
 
             Console.WriteLine("\n" + challengeResult.ToString());
-            Console.WriteLine(" Challenge Result Properties");
+            Console.WriteLine("- Challenge Result Properties");
             foreach (var s in challengeResult.Properties.Items)
             {
-                Console.WriteLine("Key: " + s.Key + " -- Value: " + s.Value);
+                Console.WriteLine(" + Key: " + s.Key + " -- Value: " + s.Value);
             }
 
             return challengeResult;
@@ -90,6 +91,15 @@ namespace EInvoice.Document.API.Controllers
         {
             //Redirect to google authorization
             await _accountService.ExternalLoginRetrieveInfo();
+
+            return Ok("Success");
+        }
+
+        [HttpGet]
+        [Route("log-out")]
+        public async Task<IActionResult> Logout()
+        {
+            await _accountService.SignOutAsync();
 
             return Ok("Success");
         }

@@ -1,13 +1,8 @@
-﻿using EInvoice.Document.Application.Common.Interfaces;
+﻿using EInvoice.Document.Application.Common;
 using EInvoice.Document.Application.Interfaces;
-using Microsoft.Net.Http.Headers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace EInvoice.Document.Infrastructure.ApiClients.Common
 {
@@ -67,18 +62,15 @@ namespace EInvoice.Document.Infrastructure.ApiClients.Common
                 }
             }
             //query parameters
+
             if (httpClientOptions.QueryParameters != null && httpClientOptions.QueryParameters.Count > 0)
             {
+                var lookup = httpClientOptions.QueryParameters.ToLookup(x => x.Item1, x => x.Item2);
                 var query = new StringBuilder();
-                foreach (var item in httpClientOptions.QueryParameters)
+                foreach (var item in lookup)
                 {
-                    if (item.Value != null && item.Value.Count > 0)
-                    {
-                        foreach (var value in item.Value)
-                        {
-                            query.Append($"{item.Key}={value}&");
-                        }
-                    }
+                    query.Append($"{item.Key}={item}" + "&");
+
                 }
                 var queryStr = query.ToString().TrimEnd('&');
                 httpClientOptions.PathString += "?" + queryStr;

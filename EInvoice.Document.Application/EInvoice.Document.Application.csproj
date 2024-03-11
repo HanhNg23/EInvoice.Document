@@ -7,21 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
+    <Folder Include="Enumerations\" />
     <Folder Include="Security\" />
-    <Folder Include="UseCase\Models\" />
-    <Folder Include="UseCase\Commands\" />
-    <Folder Include="Exceptions\" />
-    <Folder Include="UseCase\UserIdentity\" />
-    <Folder Include="UseCase\Validators\" />
-    <Folder Include="UseCase\Queries\" />
+    <Folder Include="UseCase\Document\Commands\" />
+    <Folder Include="UseCase\Document\Validators\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Net.Http.Headers" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EInvoice.Document.Domain\EInvoice.Document.Domain.csproj" />
   </ItemGroup>
 
 </Project>

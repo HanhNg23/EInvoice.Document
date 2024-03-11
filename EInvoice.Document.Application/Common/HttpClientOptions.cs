@@ -5,7 +5,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EInvoice.Document.Infrastructure.ApiClients.Common
+namespace EInvoice.Document.Application.Common
 {
     public class HttpClientOptions
     {
@@ -16,7 +16,7 @@ namespace EInvoice.Document.Infrastructure.ApiClients.Common
         public string? AccessToken { get; set; }
         public string? TokenType { get; set; }
         public IDictionary<string, string>? HeaderKeyValues { get; set; }
-        public IDictionary<string, ICollection<string>>? QueryParameters { get; set; }
+        public List<Tuple<string,string>>? QueryParameters { get; set; }
 
     }
 

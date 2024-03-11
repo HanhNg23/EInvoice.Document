@@ -11,5 +11,6 @@ namespace EInvoice.Document.Domain.Constants.Security
     {
         public const string HasConfirmedEmail = "RequireEmailConfirmed";
         public const string SelfOrAdmin = "SelfOrAdmin";
+        
     }
 }

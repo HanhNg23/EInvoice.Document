@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Net;
 
 
 
@@ -44,10 +45,11 @@ public static class DependencyInjection
 
         services.AddAuthentication(options =>
         {
-            options.DefaultScheme = GoogleDefaults.AuthenticationScheme;//GoogleDefaults.AuthenticationScheme;  
+            options.DefaultScheme = GoogleDefaults.AuthenticationScheme;
         })
-            //position for application scheme above external scheme
-            .AddCookie(IdentityConstants.ApplicationScheme, options => 
+            // position for application scheme above external scheme because the configuration
+            // of the cookie handler for the application scheme will be used for the external scheme
+            .AddCookie(IdentityConstants.ApplicationScheme, options => // Assign the Cookie handler for IdentityCOnstants.ApplicationScheme with additional main config
             {
                 options.SlidingExpiration = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
@@ -57,11 +59,11 @@ public static class DependencyInjection
                 options.Cookie.SameSite = SameSiteMode.Strict;
                 options.Cookie.IsEssential = true;
             })
-            .AddCookie(IdentityConstants.ExternalScheme, options =>
+            .AddCookie(IdentityConstants.ExternalScheme, options => //Assign the Cookie handler for IdentityCOnstants.ExternalScheme
             {
                 options.Cookie.Name = "EInvoiceDocumentAPI";
-            }) //Assign the Cookie handler for IdentityCOnstants.ExternalScheme
-               //.AddCookie(IdentityConstants.ExternalScheme) //Assign the Cookie handler for IdentityCOnstants.ExternalScheme
+            }) 
+             //.AddCookie(IdentityConstants.ExternalScheme) //Assign the Cookie handler for IdentityCOnstants.ExternalScheme
             .AddGoogle(options =>
             {
                 options.ClientId = googleClientId;
